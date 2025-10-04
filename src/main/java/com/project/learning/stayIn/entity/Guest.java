@@ -2,12 +2,7 @@ package com.project.learning.stayIn.entity;
 
 import com.project.learning.stayIn.entity.enums.Gender;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
-@Entity
-@Getter
-@Setter
 public class Guest {
 
     @Id
