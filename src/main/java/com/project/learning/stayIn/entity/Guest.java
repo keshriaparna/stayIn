@@ -2,7 +2,7 @@ package com.project.learning.stayIn.entity;
 
 import com.project.learning.stayIn.entity.enums.Gender;
 import jakarta.persistence.*;
-
+@Entity
 public class Guest {
 
     @Id
