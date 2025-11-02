@@ -1,6 +1,7 @@
 package com.project.learning.stayIn.entity;
 
 import jakarta.persistence.*;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -43,4 +44,7 @@ public class Hotel {
 
     @ManyToOne
     private User owner;
+
+    @OneToMany(mappedBy = "hotel")
+    private List<Room> rooms;
 }
