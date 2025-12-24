@@ -1,7 +1,10 @@
 package com.project.learning.stayIn.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -18,6 +21,9 @@ import java.time.LocalDateTime;
         name = "unique_hotel_room_date",
                 columnNames = { "hotel_id", "room_id","date" }
         ))
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Inventory {
 
     @Id
