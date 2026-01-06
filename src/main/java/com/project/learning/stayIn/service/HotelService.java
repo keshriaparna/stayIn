@@ -1,6 +1,7 @@
 package com.project.learning.stayIn.service;
 
 import com.project.learning.stayIn.dto.HotelDto;
+import com.project.learning.stayIn.dto.HotelInfoDto;
 
 public interface HotelService {
     HotelDto createNewHotel(HotelDto hotelDto);
@@ -12,4 +13,6 @@ public interface HotelService {
     void deleteHotelById(Long id);
 
     void activateHotel(Long hotelId);
+
+  HotelInfoDto getHotelInfoById(Long hotelId);
 }

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface InventoryRepository extends JpaRepository<Inventory,Long> {
 
-  void deleteByDateAfterAndRoom(LocalDate date, Room room);
+  void deleteByRoom(Room room);
 
   @Query("""
       SELECT DISTINCT i.hotel

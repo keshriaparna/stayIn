@@ -5,7 +5,6 @@ import com.project.learning.stayIn.entity.Hotel;
 import com.project.learning.stayIn.entity.Room;
 import com.project.learning.stayIn.exception.ResourceNotFoundException;
 import com.project.learning.stayIn.repository.HotelRepository;
-import com.project.learning.stayIn.repository.InventoryRepository;
 import com.project.learning.stayIn.repository.RoomRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -69,7 +68,7 @@ public class RoomServiceImpl implements RoomService{
         .findById(roomId)
         .orElseThrow(() -> new ResourceNotFoundException("Room not found with ID: "+roomId));
     //Delete all future inventory for this room
-    inventoryService.deleteFutureInventories(room);
+    inventoryService.deleteAllInventories(room);
     roomRepository.deleteById(roomId);
   }
 }

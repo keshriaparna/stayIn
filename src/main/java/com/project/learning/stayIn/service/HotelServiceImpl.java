@@ -1,11 +1,15 @@
 package com.project.learning.stayIn.service;
 
 import com.project.learning.stayIn.dto.HotelDto;
+import com.project.learning.stayIn.dto.HotelInfoDto;
+import com.project.learning.stayIn.dto.RoomDto;
 import com.project.learning.stayIn.entity.Hotel;
 import com.project.learning.stayIn.entity.Room;
 import com.project.learning.stayIn.exception.ResourceNotFoundException;
 import com.project.learning.stayIn.repository.HotelRepository;
+import com.project.learning.stayIn.repository.RoomRepository;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -19,6 +23,7 @@ public class HotelServiceImpl implements HotelService {
     private final HotelRepository hotelRepository;
     private final InventoryService inventoryService;
     private final ModelMapper modelMapper;
+    private final RoomRepository roomRepository;
 
     @Override
     public HotelDto createNewHotel(HotelDto hotelDto) {
@@ -55,11 +60,13 @@ public class HotelServiceImpl implements HotelService {
   public void deleteHotelById(Long id) {
     Hotel hotel= hotelRepository.findById(id)
         .orElseThrow(()-> new ResourceNotFoundException("Hotel with ID: "+id+" does not exist"));
-    hotelRepository.deleteById(id);
-    //delete the future inventories for this hotel
+
+    //delete the all inventories for this hotel
     for(Room room:hotel.getRooms()){
-      inventoryService.initializeRoomForAYear(room);
+      inventoryService.deleteAllInventories(room);
+      roomRepository.deleteById(room.getId());
     }
+    hotelRepository.deleteById(id);
   }
 
   @Override
@@ -75,5 +82,17 @@ public class HotelServiceImpl implements HotelService {
     for(Room room:hotel.getRooms()){
       inventoryService.initializeRoomForAYear(room);
     }
+  }
+
+  @Override
+  public HotelInfoDto getHotelInfoById(Long hotelId) {
+    Hotel hotel= hotelRepository
+        .findById(hotelId)
+        .orElseThrow(()-> new ResourceNotFoundException("Hotel with ID: "+hotelId+" does not exist"));
+    List<RoomDto> rooms = hotel.getRooms()
+            .stream()
+            .map((element)->modelMapper.map(element,RoomDto.class))
+            .toList();
+    return new HotelInfoDto(modelMapper.map(hotel,HotelDto.class),rooms);
   }
 }
