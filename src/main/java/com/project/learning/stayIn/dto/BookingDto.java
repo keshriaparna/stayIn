@@ -21,15 +21,15 @@ import jakarta.persistence.OneToOne;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
+
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+@Data
 public class BookingDto {
 
   private Long id;
-  private Hotel hotel;
-  private Room room;
-  private User user;
   private Integer roomsCount;
   private LocalDate checkInDate;
   private LocalDate checkOutDate;

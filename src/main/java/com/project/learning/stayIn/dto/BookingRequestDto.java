@@ -8,7 +8,7 @@ public class BookingRequestDto {
   private Long hotelId;
   private Long roomId;
   private LocalDate checkInDate;
-  private LocalDate checkoutDate;
+  private LocalDate checkOutDate;
   private Integer roomsCount;
 
 }
