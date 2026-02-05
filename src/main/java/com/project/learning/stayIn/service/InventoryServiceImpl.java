@@ -55,12 +55,14 @@ public class InventoryServiceImpl implements InventoryService{
   public Page<HotelDto> searchHotels(HotelSearchRequest hotelSearchRequest) {
     log.info("Searching hotels for {} city, from {} to {}",hotelSearchRequest.getCity(),hotelSearchRequest.getStartDate(),hotelSearchRequest.getEndDate());
     Pageable pageable = PageRequest.of(hotelSearchRequest.getPage(), hotelSearchRequest.getSize());
+    //if start date is 15 and end date is 15 then we are going to get dateCount as 0 but it should be 1, so adding 1 to it
     long dateCount =
         ChronoUnit.DAYS.between(hotelSearchRequest.getStartDate(),hotelSearchRequest.getEndDate())+1;
 
     Page<Hotel> hotelPage = inventoryRepository.findHotelsWithAvailableInventory(hotelSearchRequest.getCity(),
         hotelSearchRequest.getStartDate(),hotelSearchRequest.getEndDate(),hotelSearchRequest.getRoomsCount(),
         dateCount,pageable);
+    // inside Page we have map method which is function so takes and input and takes converter method and converts it to HotelDto
     return hotelPage.map((element)->modelMapper.map(element,HotelDto.class));
   }
 }
