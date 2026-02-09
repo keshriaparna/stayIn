@@ -1,0 +1,43 @@
+package com.project.learning.stayIn.entity;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+//stores hotel price for a particular date and just for 1 year into the future
+@Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class HotelMinPrice {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "hotel_id",nullable = false)
+    private Hotel hotel;
+
+    @Column(nullable = false)
+    private LocalDate date;
+
+    @Column(nullable = false,precision = 10,scale = 2)
+    private BigDecimal price; //cheapest room price on a particular day(this price is min price for current hotel instance)
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+
+}
