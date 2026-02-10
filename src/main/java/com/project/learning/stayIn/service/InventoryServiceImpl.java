@@ -1,10 +1,13 @@
 package com.project.learning.stayIn.service;
 
 import com.project.learning.stayIn.dto.HotelDto;
+import com.project.learning.stayIn.dto.HotelPriceDto;
 import com.project.learning.stayIn.dto.HotelSearchRequest;
 import com.project.learning.stayIn.entity.Hotel;
+import com.project.learning.stayIn.entity.HotelMinPrice;
 import com.project.learning.stayIn.entity.Inventory;
 import com.project.learning.stayIn.entity.Room;
+import com.project.learning.stayIn.repository.HotelMinPriceRepository;
 import com.project.learning.stayIn.repository.InventoryRepository;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -24,6 +27,7 @@ public class InventoryServiceImpl implements InventoryService{
 
   private final InventoryRepository inventoryRepository;
   private final ModelMapper modelMapper;
+  private final HotelMinPriceRepository hotelMinPriceRepository;
 
   @Override
   public void initializeRoomForAYear(Room room) {
@@ -53,17 +57,20 @@ public class InventoryServiceImpl implements InventoryService{
   }
 
   @Override
-  public Page<HotelDto> searchHotels(HotelSearchRequest hotelSearchRequest) {
+  public Page<HotelPriceDto> searchHotels(HotelSearchRequest hotelSearchRequest) {
     log.info("Searching hotels for {} city, from {} to {}",hotelSearchRequest.getCity(),hotelSearchRequest.getStartDate(),hotelSearchRequest.getEndDate());
     Pageable pageable = PageRequest.of(hotelSearchRequest.getPage(), hotelSearchRequest.getSize());
-    //if start date is 15 and end date is 15 then we are going to get dateCount as 0 but it should be 1, so adding 1 to it
+    //if start date is 15 and end date is 15 then we are going to get dateCount as 0, but it should be 1, so adding 1 to it
     long dateCount =
         ChronoUnit.DAYS.between(hotelSearchRequest.getStartDate(),hotelSearchRequest.getEndDate())+1;
 
-    Page<Hotel> hotelPage = inventoryRepository.findHotelsWithAvailableInventory(hotelSearchRequest.getCity(),
+    Page<HotelPriceDto> hotelPage = hotelMinPriceRepository.findHotelsWithAvailableInventory(hotelSearchRequest.getCity(),
         hotelSearchRequest.getStartDate(),hotelSearchRequest.getEndDate(),hotelSearchRequest.getRoomsCount(),
         dateCount,pageable);
+//    Page<Hotel> hotelPage = inventoryRepository.findHotelsWithAvailableInventory(hotelSearchRequest.getCity(),
+//            hotelSearchRequest.getStartDate(),hotelSearchRequest.getEndDate(),hotelSearchRequest.getRoomsCount(),
+//            dateCount,pageable);
     // inside Page we have map method which is function so takes and input and takes converter method and converts it to HotelDto
-    return hotelPage.map((element)->modelMapper.map(element,HotelDto.class));
+    return hotelPage;
   }
 }

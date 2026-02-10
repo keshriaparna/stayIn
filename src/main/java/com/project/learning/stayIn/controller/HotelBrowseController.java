@@ -2,6 +2,7 @@ package com.project.learning.stayIn.controller;
 
 import com.project.learning.stayIn.dto.HotelDto;
 import com.project.learning.stayIn.dto.HotelInfoDto;
+import com.project.learning.stayIn.dto.HotelPriceDto;
 import com.project.learning.stayIn.dto.HotelSearchRequest;
 import com.project.learning.stayIn.service.HotelService;
 import com.project.learning.stayIn.service.InventoryService;
@@ -23,10 +24,11 @@ public class HotelBrowseController {
   private final HotelService hotelService;
 
   @GetMapping("/search")
-  public ResponseEntity<Page<HotelDto>> searchHotels(@RequestBody HotelSearchRequest hotelSearchRequest){
-    Page<HotelDto> page = inventoryService.searchHotels(hotelSearchRequest);
+  public ResponseEntity<Page<HotelPriceDto>> searchHotels(@RequestBody HotelSearchRequest hotelSearchRequest){
+    var page = inventoryService.searchHotels(hotelSearchRequest);
     return ResponseEntity.ok(page);
   }
+
 
   @GetMapping("/{hotelId}/info")
   public ResponseEntity<HotelInfoDto> getHotelInfo(@PathVariable Long hotelId){
