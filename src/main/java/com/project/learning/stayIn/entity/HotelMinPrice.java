@@ -1,7 +1,6 @@
 package com.project.learning.stayIn.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,7 +15,6 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public class HotelMinPrice {
 
@@ -40,4 +38,8 @@ public class HotelMinPrice {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    public HotelMinPrice(Hotel hotel, LocalDate date) {
+        this.hotel = hotel;
+        this.date = date;
+    }
 }
