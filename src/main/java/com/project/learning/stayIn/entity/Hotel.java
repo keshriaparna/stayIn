@@ -1,5 +1,6 @@
 package com.project.learning.stayIn.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.List;
 import lombok.Getter;
@@ -46,5 +47,6 @@ public class Hotel {
     private User owner;
 
     @OneToMany(mappedBy = "hotel")
+    @JsonIgnore
     private List<Room> rooms;
 }
